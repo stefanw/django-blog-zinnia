@@ -116,10 +116,13 @@ class ManagersTestCase(TestCase):
         self.assertEqual(Entry.published.count(), 2)
 
     def test_entry_published_manager_on_site(self):
+        self.assertEqual(Entry.published.on_site().count(), 1)
+        self.entry_2.status = PUBLISHED
+        self.entry_2.save()
         self.assertEqual(Entry.published.on_site().count(), 2)
         self.entry_2.sites.clear()
         self.entry_2.sites.add(self.sites[1])
-        self.assertEqual(Entry.published.on_site().count(), 1)
+        self.assertEqual(Entry.published.on_site().count(), 0)
         self.entry_1.sites.clear()
         self.assertEqual(Entry.published.on_site().count(), 0)
 
